@@ -1,0 +1,13 @@
+# Ambiente Virtual
+.venv/
+
+# Cache do Python
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Arquivos de Configuração Local / Segurança
+.env
+/rules.txt
