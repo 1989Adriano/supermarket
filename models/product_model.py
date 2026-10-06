@@ -63,6 +63,7 @@ class Products(Base):
         default=EnumUnitType.UNIT,
         nullable=False,
     )
+    
     is_perishable = Column(Boolean, default=False, nullable=False)
     expiration_date = Column(Date, nullable=True)
 

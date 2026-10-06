@@ -25,13 +25,11 @@ class PaymentTransactions(Base):
     amount = Column(Numeric(10, 2), nullable=False)
     transaction_date = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-    # Dados da maquininha / banco
-    acquirer = Column(
-        String(50), nullable=True
-    )  # Ex: 'Stone', 'Cielo', 'Banco do Brasil'
-    authorization_code = Column(
-        String(50), nullable=True
-    )  # Código NSU do comprovante do cartão
+    # Dados da maquininha / banco Ex: 'Stone', 'Cielo', 'Banco do Brasil'
+    acquirer = Column(String(50), nullable=True)
+
+    # Código NSU do comprovante do cartão
+    authorization_code = Column(String(50), nullable=True)
 
     # Status da maquininha
     status = Column(

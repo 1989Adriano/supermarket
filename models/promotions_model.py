@@ -8,11 +8,14 @@ class Promotions(Base):
     __tablename__ = "promotions"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)  # Ex: "Encarte de Aniversário"
-    promotional_price = Column(Numeric(10, 2), nullable=False)  # Preço com desconto
+    name = Column(String(100), nullable=False)
+
+    # Preço com desconto
+    promotional_price = Column(Numeric(10, 2), nullable=False)
 
     # Validade automática da oferta.
     start_date = Column(DateTime, nullable=False)
+    
     end_date = Column(DateTime, nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
 

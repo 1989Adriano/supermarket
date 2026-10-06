@@ -42,7 +42,7 @@ class StockAdjustment(Base):
     product_id = Column(
         Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False
     )
-    
+
     employee_id = Column(
         Integer, ForeignKey("employee.id", ondelete="RESTRICT"), nullable=False
     )

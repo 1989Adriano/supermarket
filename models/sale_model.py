@@ -65,10 +65,12 @@ class SaleItem(Base):
     __tablename__ = "sale_items"
 
     id = Column(Integer, primary_key=True)
-    quantity = Column(Integer, nullable=False)  # Quantidade comprada (ou peso em KG)
-    unit_price = Column(
-        Numeric(10, 2), nullable=False
-    )  # Preço cobrado por unidade no momento da venda
+
+    # Quantidade comprada (ou peso em KG)
+    quantity = Column(Integer, nullable=False)
+
+    # Preço cobrado por unidade no momento da venda
+    unit_price = Column(Numeric(10, 2), nullable=False)
 
     # Relação com a Venda Geral(Cupom)
     sale_id = Column(

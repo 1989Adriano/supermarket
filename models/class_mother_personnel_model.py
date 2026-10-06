@@ -69,9 +69,11 @@ class BaseComplement(Base):
     profession = Column(String(100), nullable=True)
     married = Column(Boolean, default=False)
     coments = Column(String(250), nullable=True)
+
     sex = Column(
         SQLEnum(EnumSex, native_enum=False), default=EnumSex.EMPTY, nullable=True
     )
+    
     rg = Column(String(20), unique=True, nullable=True)
     nationality = Column(String(50), nullable=True)
     place_of_birth = Column(String(50), nullable=True)

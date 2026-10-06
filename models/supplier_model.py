@@ -12,17 +12,21 @@ class Supplier(Base):
     __tablename__ = "suppliers"
 
     id = Column(Integer, primary_key=True)
-    corporate_name = Column(String(150), nullable=False)  # Razão Social
-    trade_name = Column(String(150), nullable=False)  # Nome Fantasia
 
-    # Documentos Fiscais
-    cnpj = Column(String(18), unique=True, nullable=False)  # Ex: 00.000.000/0000-00
-    state_registration = Column(
-        String(20), unique=True, nullable=True
-    )  # Inscrição Estadual (IE)
+    # Razão Social
+    corporate_name = Column(String(150), nullable=False)
 
-    # Contato do Vendedor/Representante Comercial
-    contact_name = Column(String(100), nullable=False)  # Nome do vendedor que te atende
+    # Nome Fantasia
+    trade_name = Column(String(150), nullable=False)
+
+    # Ex: 00.000.000/0000-00
+    cnpj = Column(String(18), unique=True, nullable=False) 
+
+    # Inscrição Estadual (IE)
+    state_registration = Column(String(20), unique=True, nullable=True)
+   
+    # Nome do vendedor que te atende
+    contact_name = Column(String(100), nullable=False) 
     email = Column(String(100), nullable=True)
     phone = Column(String(20), nullable=False)
 

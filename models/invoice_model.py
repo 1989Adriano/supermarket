@@ -25,7 +25,7 @@ class Invoices(Base):
     received_at = Column(
         DateTime, default=datetime.utcnow, nullable=False
     )  # Quando chegou no mercado
-    
+
     total_amount = Column(Numeric(10, 2), nullable=False)  # Valor total da nota (R$)
 
     # Relacionamento com o Fornecedor
@@ -51,10 +51,10 @@ class InvoiceItem(Base):
     __tablename__ = "invoice_items"
 
     id = Column(Integer, primary_key=True)
-    quantity = Column(Integer, nullable=False)  # Quantidade comprada do produto
-    unit_cost = Column(
-        Numeric(10, 2), nullable=False
-    )  # Preço de custo pago por unidade
+    quantity = Column(Integer, nullable=False)
+
+    # Preço de custo pago por unidade
+    unit_cost = Column(Numeric(10, 2), nullable=False)
 
     # Relação com a Nota Fiscal
     invoice_id = Column(
