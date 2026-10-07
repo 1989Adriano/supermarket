@@ -41,7 +41,7 @@ class PaymentsRepository:
         return result.scalar_one_or_none()
 
     # Delete
-    async def delte_payments(self, payments_id: int) -> PaymentTransactions | None:
+    async def delete_payments(self, payments_id: int) -> PaymentTransactions | None:
         result = await self.session.execute(
             select(PaymentTransactions).where(PaymentTransactions.id == payments_id)
         )

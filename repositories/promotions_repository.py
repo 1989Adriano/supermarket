@@ -45,6 +45,7 @@ class PromotionsRepository:
     async def update_promotions(
         self, promotion_id: int, data: dict
     ) -> Promotions | None:
+
         result = await self.session.execute(
             select(Promotions).where(Promotions.id == promotion_id)
         )
