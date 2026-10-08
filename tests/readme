@@ -1,0 +1,15 @@
+"""
+=============================================================================
+AVISO DE CONFORMIDADE E PRIVACIDADE (DADOS DE AMBIENTE DE TESTES)
+=============================================================================
+Os payloads, requisições e massa de dados estruturados para este módulo de 
+validação utilizam dados inteiramente fictícios. 
+A engenharia desta API está em ambiente de desenvolvimento (Sandbox), onde:
+  - Estruturas de CPF, CNPJ, PIS/PASEP e CTPS servem apenas para testar 
+    as travas físicas de chaves únicas (UNIQUE constraints) do SQLAlchemy.
+  - E-mails e registros biográficos atendem puramente aos validadores 
+    de tipos do Pydantic (ex: EmailStr).
+Em estrita conformidade com a LGPD, nenhuma entidade real é exposta ou tratada.
+=============================================================================
+"""
+

@@ -1,0 +1,39 @@
+####### PROMOTIONS ########
+
+# CREATE
+{
+  "name": "Festival do Arroz e Feijão - Desconto Especial",  
+  "promotional_price": 15.00,
+  "start_date": "2026-10-08",
+  "end_date": "2026-10-15",
+  "is_active": true,
+  "product_id": 1
+}
+
+
+{
+  "name": "Super Oferta - Limpa Estoque Semanal",
+  "promotional_price": 12.50,
+  "start_date": "2026-10-08",
+  "end_date": "2026-10-12",
+  "is_active": true,
+  "product_id": 1
+}
+
+
+{
+  "name": "Super Oferta - Limpa Estoque Semanal",
+  "promotional_price": 12.50,
+  "start_date": "2026-10-08",
+  "end_date": "2026-10-12",
+  "is_active": true,
+  "product_id": 1
+}
+
+# update
+{
+  "name": "Super Oferta - Arroz Prato Fino 5kg"
+}
+
+
+
