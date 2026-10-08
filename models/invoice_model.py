@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String, func
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -15,18 +15,20 @@ class Invoices(Base):
 
     id = Column(Integer, primary_key=True)
 
-    invoice_number = Column(
-        String(20), unique=True, nullable=False
-    )  # Número da NF-e (ex: 000.123.456)
+    # Número da NF-e (ex: 000.123.456)
+    invoice_number = Column(String(20), unique=True, nullable=False)
 
-    series = Column(String(5), nullable=True)  # Série da nota (ex: 1)
-    issue_date = Column(DateTime, nullable=False)  # Data de emissão da nota
+    # Série da nota (ex: 1)
+    series = Column(String(5), nullable=True)
 
-    received_at = Column(
-        DateTime, default=datetime.utcnow, nullable=False
-    )  # Quando chegou no mercado
+    # Data de emissão da nota
+    issue_date = Column(DateTime, nullable=False)
 
-    total_amount = Column(Numeric(10, 2), nullable=False)  # Valor total da nota (R$)
+    # Quando chegou no mercado
+    received_at = Column(DateTime, default=func.utcnow, nullable=False)
+
+    # Valor total da nota (R$)
+    total_amount = Column(Numeric(10, 2), nullable=False)
 
     # Relacionamento com o Fornecedor
     supplier_id = Column(
@@ -60,7 +62,7 @@ class InvoiceItem(Base):
     invoice_id = Column(
         Integer, ForeignKey("invoices.id", ondelete="CASCADE"), nullable=False
     )
-    invoice = relationship("Invoice", back_populates="items")
+    invoice = relationship("Invoices", back_populates="items")
 
     # Relação com o Produto (classe Products)
     product_id = Column(

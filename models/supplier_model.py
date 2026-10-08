@@ -27,7 +27,7 @@ class Supplier(Base):
    
     # Nome do vendedor que te atende
     contact_name = Column(String(100), nullable=False) 
-    email = Column(String(100), nullable=True)
+    email = Column(String(100), unique=True, nullable=True)
     phone = Column(String(20), nullable=False)
 
     # Endereço da Distribuidora/Fábrica

@@ -29,8 +29,8 @@ class SupplierResponse(BaseSupplier):
 
 
 class SupplierUpdate(BaseModel):
-    corporate_name: str | None = Field(min_length=5, max_length=150)
-    trade_name: str | None = Field(min_length=5, max_length=150)
+    corporate_name: str | None = Field(default=None, min_length=5, max_length=150)
+    trade_name: str | None = Field(default=None, min_length=5, max_length=150)
     cnpj: str | None = Field(default=None, min_length=18, max_length=18)
     state_registration: str | None = Field(default=None, min_length=5, max_length=20)
     contact_name: str | None = Field(default=None, min_length=5, max_length=100)

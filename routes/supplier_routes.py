@@ -22,7 +22,7 @@ async def create_new_supplier(
 
 # Read All
 @router.get("/", response_model=list[SupplierResponse], status_code=status.HTTP_200_OK)
-async def get_supplies(db: AsyncSession = Depends(get_db)):
+async def get__all_supplies(db: AsyncSession = Depends(get_db)):
 
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = SupplierRepository(db)

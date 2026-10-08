@@ -76,7 +76,7 @@ class SaleItem(Base):
     sale_id = Column(
         Integer, ForeignKey("sales.id", ondelete="CASCADE"), nullable=False
     )
-    sale = relationship("Sale", back_populates="items")
+    sale = relationship("Sales", back_populates="items")
 
     # Relação com o Produto Vendido
     product_id = Column(

@@ -1,0 +1,85 @@
+########## Suppliers ###########
+
+# CREATE TEST
+{
+  "corporate_name": "Distribuidora de Bebidas Aliança Ltda",
+  "trade_name": "Ambev Distribuição Regional",
+  "cnpj": "12.345.678/0001-99",
+  "state_registration": "123456789",
+  "contact_name": "Marcos Silva",
+  "email": "comercial@ambevalianca.com.br",
+  "phone": "11988887777",
+  "address": "Avenida dos Autonomistas, 1500",
+  "city": "São Paulo",
+  "state": "SP",
+  "postal_code": "06020-010",
+  "is_active": true
+}
+
+# TEST CRIANDO EMAIL REPDETIDO
+{
+  "corporate_name": "Distribuidora de Marconn Ltda",
+  "trade_name": "Distribuição Regional",
+  "cnpj": "12.345.678/0001-90",
+  "state_registration": "023456789",
+  "contact_name": "Antonio Silva",
+  "email": "comercial@ambevalianca.com.br",
+  "phone": "11988887877",
+  "address": "Avenida dos Autonomistas, 100",
+  "city": "São Paulo",
+  "state": "SP",
+  "postal_code": "06020-013",
+  "is_active": true
+}
+
+# TEST COM EMAIL CORRETO DIFERENTE
+{
+  "corporate_name": "Distribuidora de Marconn Ltda",
+  "trade_name": "Distribuição Regional",
+  "cnpj": "12.345.678/0001-90",
+  "state_registration": "023456789",
+  "contact_name": "Antonio Silva",
+  "email": "comercial@marcconn.com.br",
+  "phone": "11988887877",
+  "address": "Avenida dos Autonomistas, 100",
+  "city": "São Paulo",
+  "state": "SP",
+  "postal_code": "06020-013",
+  "is_active": true
+}
+
+# NOVO CREATE
+{
+  "corporate_name": "Distribuidora de Ammm Ltda",
+  "trade_name": "Distribuição Regional",
+  "cnpj": "19.345.678/0001-90",
+  "state_registration": "023454789",
+  "contact_name": "Zenilda Franco",
+  "email": "comercial@zenilda.com.br",
+  "phone": "11988887877",
+  "address": "Avenida dos Autonomistas, 100",
+  "city": "São Paulo",
+  "state": "SP",
+  "postal_code": "06020-013",
+  "is_active": true
+}
+
+{
+  "corporate_name": "Distribuidora de JJ Ltda",
+  "trade_name": "Distribuição Regional",
+  "cnpj": "19.345.678/0011-90",
+  "state_registration": "023054789",
+  "contact_name": "Oregon Franco",
+  "email": "comercial@Oregon.com.br",
+  "phone": "11988887877",
+  "address": "Avenida dos Autonomistas, 100",
+  "city": "São Paulo",
+  "state": "SP",
+  "postal_code": "06020-013",
+  "is_active": true
+}
+
+# UPDATE TEST
+{ 
+  "contact_name": "Maria Silva"
+}

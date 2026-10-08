@@ -1,4 +1,6 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.supplier_model import Supplier
@@ -18,13 +20,44 @@ class SupplierRepository:
     # Create
     async def create_supplier(self, data: dict) -> Supplier:
         """Recebe e Le o dicionário vindo da rota."""
-        new_supplier = Supplier(**data)
+        try:
+            new_supplier = Supplier(**data)
 
-        self.session.add(new_supplier)
-        await self.session.commit()
-        await self.session.refresh(new_supplier)
+            self.session.add(new_supplier)
+            await self.session.commit()
+            await self.session.refresh(new_supplier)
+            return new_supplier
 
-        return new_supplier
+        # Validação para campos únicos
+        except IntegrityError as e:
+            # Se houver uma colisão de UNIQUE, faz o rollback
+            await self.session.rollback()
+
+            # Analisa qual campo duplicou para avisar
+            error_msg = str(e.orig)
+            if "cnpj" in error_msg:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Já existe um fornecedor cadastrado com este CNPJ!",
+                )
+            
+            if "state_registration" in error_msg:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Já existe um fornecedor cadastrado com esta Inscrição Estadual!",
+                )           
+
+            if "email" in error_msg:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Já existe um fornecedor cadastrado com este e-mail comercial!",
+                )
+
+            # Tratamento genérico caso seja outra coluna unique
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Erro de integridade de dados! Verifique se os campos únicos já existem.",
+            )
 
     # Read All
     async def get_all_supplier(self) -> list[Supplier]:
@@ -51,7 +84,8 @@ class SupplierRepository:
 
         if supplier_exist:
             for field, value in data.items():
-                setattr(supplier_exist, field, value)
+                if value is not None:
+                    setattr(supplier_exist, field, value)
 
             await self.session.commit()
             await self.session.refresh(supplier_exist)
