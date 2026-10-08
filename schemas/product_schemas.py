@@ -44,7 +44,7 @@ class ProductResponse(BaseProduct):
     model_config = ConfigDict(from_attributes=True)
 
 
-class ProductUpadte(BaseModel):
+class ProductUpate(BaseModel):
     name: str | None = Field(default=None, min_length=3, max_length=150)
     brand: str | None = Field(default=None, min_length=3, max_length=100)  # marca
     code_bar: str | None = Field(default=None, min_length=5, max_length=20)
@@ -63,7 +63,7 @@ class ProductUpadte(BaseModel):
 
     category: EnumCategory | None = None
     unit_type: EnumUnitType | None = None
-    is_perishable: bool | None
+    is_perishable: bool | None = None
     expiration_date: date | None = Field(default=None)
     ncm_code: str | None = Field(default=None, min_length=3, max_length=8)
     supplier_id: int | None = Field(default=None)

@@ -1,0 +1,40 @@
+######### PRODUCTS #########
+
+# CREATE TEST
+# com a categoria padrao
+{
+  "name": "Arroz Agulhinha Tipo 1 5kg",
+  "code_bar": "7891234567890",
+  "brand": "Prato Fino",
+  "description": "Arroz beneficiado polido tipo 1 pacote de 5 quilos",
+  "price": 29.90,
+  "stock_quantity": 0,
+  "supplier_id": 1,
+  "is_active": true
+}
+
+# testando com as categorias e tipos selecionados
+{
+  "name": "Feijao Tipo 1 5kg",
+  "brand": "Prato Fino",
+  "code_bar": "891234567290",
+  "price": 29.90,
+  "cost_price": 22.50,
+  "category": "variados",
+  "unit_type": "UN",
+  "stock_quantity": 10,
+  "min_stock": 5,
+  "is_perishable": true,
+  "expiration_date": "2027-12-31",
+  "ncm_code": "10063011",
+  "supplier_id": 1
+}
+
+# UPATE TEST id=1
+{  
+  "stock_quantity": 20,
+  "category": "mercearia",
+  "unit_type": "UN",
+   "price": 49.90,
+   "cost_price": 27.50
+}
