@@ -47,9 +47,9 @@ class MotherUpdate(BaseModel):
     state: str | None = Field(default=None, min_length=2, max_length=2)
     email: EmailStr | None = Field(default=None, max_length=100)
     cpf: str | None = Field(default=None, min_length=11, max_length=14)
-    birthday: date | None = None
+    birthday: date | None = Field(default=None)
     phone1: str | None = Field(default=None, min_length=3, max_length=20)
-    is_active: bool | None = None
+    is_active: bool | None = Field(default=None)
 
 
 # ===================================================

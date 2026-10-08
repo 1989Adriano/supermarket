@@ -48,7 +48,7 @@ class ProductsRepository:
                     detail="O supplier_id fornecido não corresponde a nenhum fornecedor cadastrado!",
                 )
 
-            # Tratamento genérico de segurança para o banco
+            # Tratamento genérico de segurança generico Erro 500
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Erro de integridade de dados! Verifique os dados enviados.",
