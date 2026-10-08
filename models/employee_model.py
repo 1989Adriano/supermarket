@@ -56,7 +56,7 @@ class Employee(BaseFile):
     # Dados de Carteira do Funcionario
     pis_pasep = Column(String(11), unique=True, nullable=False)
     
-    ctps_number = Column(String(20), nullable=False)
+    ctps_number = Column(String(20), unique=True, nullable=False)
     admission_date = Column(Date, nullable=False)
     salary = Column(Numeric(10, 2), nullable=False)
 

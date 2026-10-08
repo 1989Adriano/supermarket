@@ -1,0 +1,110 @@
+######## Employee #########
+
+# CREATE
+{
+  "first_name": "Maria",
+  "middle_name": "Polyum",
+  "last_name": "Silva",
+  "address_line_1": "Rua Central do Mercado, 500",
+  "neighborhood": "Centro",
+  "state": "SP",
+  "email": "maria.rh@supermercado.com",
+  "cpf": "987.654.321-00",
+  "birthday": "1995-01-01",
+  "phone1": "11999998888",
+  "is_active": true,
+  "complement_id": 2,
+  "pis_pasep": "12345678901",
+  "ctps_number": "9999999-sp",
+  "admission_date": "2026-10-08",
+  "salary": 1850.00,
+  "role_title": "empacotador"
+}
+
+{
+  "first_name": "Lucas",
+  "middle_name": "Gabriel",
+  "last_name": "Oliveira",
+  "address_line_1": "Avenida das Palmeiras, 1200",
+  "neighborhood": "Jardim América",
+  "state": "SP",
+  "email": "lucas.caixa@supermercado.com",
+  "cpf": "111.222.333-44",
+  "birthday": "1998-05-15",
+  "phone1": "11988884444",
+  "is_active": true,
+  "complement_id": 1,
+  "pis_pasep": "98765432101",
+  "ctps_number": "1234567-sp",
+  "admission_date": "2026-10-08",
+  "salary": 1980.50,
+  "role_title": "operador_caixa"
+}
+
+### TESTE MESMO EMAIL
+{
+  "first_name": "Juliana",
+  "middle_name": "Alves",
+  "last_name": "Costa",
+  "address_line_1": "Rua das Flores, 88",
+  "neighborhood": "Vila Nova",
+  "state": "SP",
+  "email": "lucas.caixa@supermercado.com",
+  "cpf": "555.666.777-88",
+  "birthday": "1992-11-23",
+  "phone1": "11977775555",
+  "is_active": true,
+  "complement_id": 1,
+  "pis_pasep": "55544433321",
+  "ctps_number": "7654321-sp",
+  "admission_date": "2026-10-08",
+  "salary": 2450.00,
+  "role_title": "fiscal_caixa"
+}
+
+# TEST CPF IGUAL
+{
+  "first_name": "Juliana",
+  "middle_name": "Alves",
+  "last_name": "Costa",
+  "address_line_1": "Rua das Flores, 88",
+  "neighborhood": "Vila Nova",
+  "state": "SP",
+  "email": "juliana.fiscal@supermercado.com",
+  "cpf": "111.222.333-44",
+  "birthday": "1992-11-23",
+  "phone1": "11977775555",
+  "is_active": true,
+  "complement_id": 1,
+  "pis_pasep": "55544433321",
+  "ctps_number": "7654321-sp",
+  "admission_date": "2026-10-08",
+  "salary": 2450.00,
+  "role_title": "fiscal_caixa"
+}
+
+# CADASTRO OK 
+{
+  "first_name": "Juliana",
+  "middle_name": "Alves",
+  "last_name": "Costa",
+  "address_line_1": "Rua das Flores, 88",
+  "neighborhood": "Vila Nova",
+  "state": "SP",
+  "email": "juliana.fiscal@supermercado.com",
+  "cpf": "555.666.777-88",
+  "birthday": "1992-11-23",
+  "phone1": "11977775555",
+  "is_active": true,
+  "complement_id": 3,
+  "pis_pasep": "55544433321",
+  "ctps_number": "7654321-sp",
+  "admission_date": "2026-10-08",
+  "salary": 2450.00,
+  "role_title": "fiscal_caixa"
+}
+
+# UPDATE TESTE id=3
+{
+   "phone1": "11977775556"
+}
