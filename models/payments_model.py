@@ -1,7 +1,6 @@
-import datetime
 from enum import Enum
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String, func
 from sqlalchemy import Enum as SQLEnum
 
 from core.database import Base
@@ -23,7 +22,7 @@ class PaymentTransactions(Base):
 
     id = Column(Integer, primary_key=True)
     amount = Column(Numeric(10, 2), nullable=False)
-    transaction_date = Column(DateTime, default=datetime.utcnow, nullable=False)
+    transaction_date = Column(DateTime, default=func.now(), nullable=False)
 
     # Dados da maquininha / banco Ex: 'Stone', 'Cielo', 'Banco do Brasil'
     acquirer = Column(String(50), nullable=True)

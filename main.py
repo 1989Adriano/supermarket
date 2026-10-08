@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from core.database import Base, database
 from routes.cash_register_routes import router as cash_register_router
@@ -20,7 +21,6 @@ Como estamos criando o db direto usamos essa função,
 caso o banco ja existice deixa somente a parte do FastAPi
 """
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with database.begin() as conn:
@@ -30,6 +30,16 @@ async def lifespan(app: FastAPI):
 
 # Cria a Instância do FastAPI
 app = FastAPI(title="supermarket", lifespan=lifespan)
+
+
+# Configuração de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Conectando as rotas ao sistema
 app.include_router(supplier_router)
@@ -47,4 +57,4 @@ app.include_router(invoice_router)
 # Rota test para swagger
 @app.get("/")
 async def home():
-    return {"message": "SuperMarket API!"}
+    return {"message": "API do Supermercado operacional e online!"}

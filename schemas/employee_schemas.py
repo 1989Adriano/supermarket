@@ -5,10 +5,11 @@ from pydantic import Field
 
 from models.employee_model import EnumRoleTitle
 from schemas.class_mother_personnel_schemas import (
-    BaseComplementResponse,
-    BaseMotherResponse,
     BaseMotherSchema,
-    BaseMotherUpdate,
+    ComplementResponse,
+    MotherRequest,
+    MotherResponse,
+    MotherUpdate,
 )
 
 
@@ -36,7 +37,7 @@ class EmployeeRequest(BaseEmployeeRequest):
     pass
 
 
-class EmployeeResponse(BaseMotherResponse):
+class EmployeeResponse(MotherResponse):
     pis_pasep: str
     ctps_number: str
     admission_date: date
@@ -45,10 +46,10 @@ class EmployeeResponse(BaseMotherResponse):
 
     # Relacionamento o a tabela Complement(complemento do cadastro funcionario)
     complement_id: int
-    complement: BaseComplementResponse | None = None
+    complement: ComplementResponse | None = None
 
 
-class EmployeeUpdate(BaseMotherUpdate):
+class EmployeeUpdate(MotherUpdate):
     pis_pasep: str | None = Field(default=None, min_length=11, max_length=11)
     ctps_number: str | None = Field(default=None, max_length=20)
     salary: Decimal | None = Field(default=None, gt=0, max_digits=10, decimal_places=2)

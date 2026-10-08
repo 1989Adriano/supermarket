@@ -1,8 +1,7 @@
 # Sugestão de Model para o arquivo stock_adjustment.py
-import datetime
 from enum import Enum
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy import Enum as SQLEnum
 
 from core.database import Base
@@ -32,7 +31,7 @@ class StockAdjustment(Base):
 
     id = Column(Integer, primary_key=True)
     quantity = Column(Integer, nullable=False)
-    adjusted_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    adjusted_at = Column(DateTime, default=func.now(), nullable=False)
 
     # Causa/Ocorrido com produto perdido
     reason = Column(SQLEnum(EnumReason, native_enum=False), nullable=False)

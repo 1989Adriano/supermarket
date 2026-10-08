@@ -1,7 +1,5 @@
 # Sugestão de Model para o arquivo cash_register.py
-import datetime
-
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String, func
 
 from core.database import Base
 
@@ -13,7 +11,7 @@ class CashRegisterSession(Base):
 
     id = Column(Integer, primary_key=True)
     terminal_number = Column(String(10), nullable=False)  # Ex: "Caixa 01"
-    opened_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    opened_at = Column(DateTime, default=func.now(), nullable=False)
 
     # Fica nulo enquanto o caixa trabalhar
     closed_at = Column(DateTime, nullable=True)

@@ -72,7 +72,6 @@ class BaseComplementSchema(BaseModel):
 
 class ComplementRequest(BaseComplementSchema):
     """Usado na criação do complemento"""
-
     pass
 
 
