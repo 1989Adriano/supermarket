@@ -9,11 +9,11 @@
   "neighborhood": "Centro",
   "state": "SP",
   "email": "maria.rh@supermercado.com",
-  "cpf": "987.654.321-00",
+  "cpf": "98765432100",
   "birthday": "1995-01-01",
   "phone1": "11999998888",
   "is_active": true,
-  "complement_id": 2,
+  "complement_id": null,
   "pis_pasep": "12345678901",
   "ctps_number": "9999999-sp",
   "admission_date": "2026-10-08",
@@ -29,17 +29,18 @@
   "neighborhood": "Jardim América",
   "state": "SP",
   "email": "lucas.caixa@supermercado.com",
-  "cpf": "111.222.333-44",
+  "cpf": "11122233344",
   "birthday": "1998-05-15",
   "phone1": "11988884444",
   "is_active": true,
-  "complement_id": 1,
+  "complement_id": null,
   "pis_pasep": "98765432101",
   "ctps_number": "1234567-sp",
   "admission_date": "2026-10-08",
   "salary": 1980.50,
   "role_title": "operador_caixa"
 }
+
 
 ### TESTE MESMO EMAIL
 {
@@ -50,17 +51,18 @@
   "neighborhood": "Vila Nova",
   "state": "SP",
   "email": "lucas.caixa@supermercado.com",
-  "cpf": "555.666.777-88",
+  "cpf": "55566677788",
   "birthday": "1992-11-23",
   "phone1": "11977775555",
   "is_active": true,
-  "complement_id": 1,
+  "complement_id": null,
   "pis_pasep": "55544433321",
   "ctps_number": "7654321-sp",
   "admission_date": "2026-10-08",
   "salary": 2450.00,
   "role_title": "fiscal_caixa"
 }
+
 
 # TEST CPF IGUAL
 {
@@ -71,17 +73,18 @@
   "neighborhood": "Vila Nova",
   "state": "SP",
   "email": "juliana.fiscal@supermercado.com",
-  "cpf": "111.222.333-44",
+  "cpf": "98765432100",
   "birthday": "1992-11-23",
   "phone1": "11977775555",
   "is_active": true,
-  "complement_id": 1,
+  "complement_id": null,
   "pis_pasep": "55544433321",
   "ctps_number": "7654321-sp",
   "admission_date": "2026-10-08",
   "salary": 2450.00,
   "role_title": "fiscal_caixa"
 }
+
 
 # CADASTRO OK 
 {
@@ -92,11 +95,11 @@
   "neighborhood": "Vila Nova",
   "state": "SP",
   "email": "juliana.fiscal@supermercado.com",
-  "cpf": "555.666.777-88",
+  "cpf": "55566677788",
   "birthday": "1992-11-23",
   "phone1": "11977775555",
   "is_active": true,
-  "complement_id": 3,
+  "complement_id": null,
   "pis_pasep": "55544433321",
   "ctps_number": "7654321-sp",
   "admission_date": "2026-10-08",
@@ -104,7 +107,9 @@
   "role_title": "fiscal_caixa"
 }
 
+
 # UPDATE TESTE id=3
 {
-   "phone1": "11977775556"
+  "phone1": "11977775556"
 }
+

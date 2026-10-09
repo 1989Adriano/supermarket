@@ -44,13 +44,13 @@ class BaseFile(Base):
 
     # Documentos e Contato
     email = Column(String(100), unique=True, nullable=False)
-    cpf = Column(String(13), unique=True, nullable=False)
+    cpf = Column(String(14), unique=True, nullable=False)
     birthday = Column(Date, nullable=False)
     phone1 = Column(String(20), nullable=False)
 
     # Controle de Sistema
     is_active = Column(Boolean, default=True, nullable=False)
-    date_acc_created = Column(DateTime, default=func.datetime.now(), nullable=False)
+    date_acc_created = Column(DateTime, default=func.now(), nullable=False)
 
 
 class BaseComplement(Base):

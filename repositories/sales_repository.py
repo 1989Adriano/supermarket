@@ -1,4 +1,6 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.product_model import Products
@@ -23,28 +25,56 @@ class SalesRepository:
     # Create
     async def create_sale(self, sale_data: dict, items_data: list[dict]) -> Sales:
         """Recebe os dados do cupom e a lista de itens da rota para salvar em lote."""
-        new_sale = Sales(**sale_data)
-        self.session.add(new_sale)
-        await self.session.flush()
 
-        for item in items_data:
-            item_obj = SaleItem(**item)
-            item_obj.sale_id = new_sale.id  # Vincula o item ao ID do cupom
+        if items_data is None:
+            items_data = []
 
-            product_result = await self.session.execute(
-                select(Products).where(Products.id == item_obj.product_id)
+        try:
+            new_sale = Sales(**sale_data)
+            self.session.add(new_sale)
+            await self.session.flush()
+
+            for item in items_data:
+                item_obj = SaleItem(**item)
+                item_obj.sale_id = new_sale.id  # Vincula o item ao ID do cupom
+
+                product_result = await self.session.execute(
+                    select(Products).where(Products.id == item_obj.product_id)
+                )
+                product_obj = product_result.scalar_one_or_none()
+
+                if product_obj:
+                    product_obj.stock_quantity -= item_obj.quantity
+
+                self.session.add(item_obj)
+
+            await self.session.commit()
+            await self.session.refresh(new_sale)
+            return new_sale
+
+        except IntegrityError as e:
+            await self.session.rollback()
+            error_msg = str(e.orig).lower()
+
+            # Status de Erro para se encontar erro de operador de caixa inexistente
+            if "foreign key" in error_msg or "cashier_id" in error_msg:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Impossível abrir cupom! O ID do operador de caixa (cashier_id) informado não existe no sistema.",
+                )
+
+            # Status de Erro para se encontrar erro de número de cupom fiscal duplicado
+            if "receipt_number" in error_msg or "unique" in error_msg:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Já existe um cupom fiscal registrado com este número de recebimento!",
+                )
+
+            # Tratamento genérico contra Erro 500
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Erro de integridade de dados ao faturar a venda. Verifique as restrições.",
             )
-            product_obj = product_result.scalar_one_or_none()
-
-            if product_obj:
-                product_obj.stock_quantity -= item_obj.quantity
-
-            self.session.add(item_obj)
-
-        await self.session.commit()
-        await self.session.refresh(new_sale)
-
-        return new_sale
 
     # Read All
     async def get_all_sales(self) -> list[Sales]:
@@ -90,10 +120,10 @@ class SalesRepository:
 class SaleItemRepository:
     """
     Repositório de Detalhes de Vendas (Itens do Carrinho).
-    Gerencia de forma isolada as operações de quantidade e preço cobrado 
+    Gerencia de forma isolada as operações de quantidade e preço cobrado
     para cada produto contido dentro de um cupom fiscal de venda.
     """
-    
+
     # Constructor
     def __init__(self, session: AsyncSession):
         self.session = session
@@ -101,23 +131,40 @@ class SaleItemRepository:
     # Create
     async def create_sale_item(self, data: dict) -> SaleItem:
         """Recebe e Le o dicionário vindo da rota."""
-        new_sale = SaleItem(**data)
+        try:
+            new_sale = SaleItem(**data)
 
-        result = await self.session.execute(
-            select(Products).where(Products.id == new_sale.product_id)
-        )
+            result = await self.session.execute(
+                select(Products).where(Products.id == new_sale.product_id)
+            )
 
-        # Se existe cai no if, se não retorna None
-        product_obj = result.scalar_one_or_none()
+            # Se existe cai no if, se não retorna None
+            product_obj = result.scalar_one_or_none()
 
-        if product_obj:
-            product_obj.stock_quantity -= new_sale.quantity
+            if product_obj:
+                product_obj.stock_quantity -= new_sale.quantity
 
-        self.session.add(new_sale)
-        await self.session.commit()
-        await self.session.refresh(new_sale)
+            self.session.add(new_sale)
+            await self.session.commit()
+            await self.session.refresh(new_sale)
+            return new_sale
 
-        return new_sale
+        except IntegrityError as e:
+            await self.session.rollback()
+            error_msg = str(e.orig).lower()
+
+            # Status de Erro para se houver colisão de item único
+            if "foreign key" in error_msg or "product_id" in error_msg:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Não foi possível adicionar o item! O ID do produto informado não existe.",
+                )
+
+            # Tratamento genérico contra Erro 500
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Erro de integridade de dados ao salvar o item da venda.",
+            )
 
     # Read All
     async def get_all_sale_item(self) -> list[SaleItem]:

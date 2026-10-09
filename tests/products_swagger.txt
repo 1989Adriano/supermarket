@@ -13,6 +13,18 @@
   "is_active": true
 }
 
+{
+  "name": "Feijao Tipo 1 5kg",
+  "code_bar": "7891234567830",
+  "brand": "Prato Fino",
+  "description": "Feijao beneficiado polido tipo 1 pacote de 5 quilos",
+  "price": 39.90,
+  "stock_quantity": 4,
+  "supplier_id": 1,
+  "is_active": true
+}
+
+
 # testando com as categorias e tipos selecionados
 {
   "name": "Feijao Tipo 1 5kg",

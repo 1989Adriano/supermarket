@@ -19,14 +19,14 @@ class BaseEmployeeRequest(BaseMotherSchema):
     que estão nessa classe.
     """
 
-    complement_id: int = Field(
-        ..., description="ID do complemento do usuário previamente cadastrado"
+    complement_id: int | None = Field(
+        default=None, description="ID do complemento do usuário previamente cadastrado"
     )
 
     pis_pasep: str = Field(
         ..., min_length=11, max_length=11, description="PIS/PASEP apenas com números"
     )
-    
+
     ctps_number: str = Field(..., max_length=20)
     admission_date: date
     salary: Decimal = Field(..., gt=0, max_digits=10, decimal_places=2)
@@ -45,7 +45,7 @@ class EmployeeResponse(MotherResponse):
     role_title: EnumRoleTitle
 
     # Relacionamento o a tabela Complement(complemento do cadastro funcionario)
-    complement_id: int
+    complement_id: int | None = None
     complement: ComplementResponse | None = None
 
 

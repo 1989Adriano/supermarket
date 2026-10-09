@@ -49,7 +49,7 @@ class Employee(BaseFile):
         Integer,
         ForeignKey("employee_complements.id", ondelete="CASCADE"),
         unique=True,
-        nullable=False,
+        nullable=True,
     )
     complement = relationship("EmployeeComplements", lazy="joined")
 

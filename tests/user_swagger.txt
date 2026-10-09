@@ -8,10 +8,25 @@
   "address_line_1": "Rua Central do Mercado, 500",
   "neighborhood": "Centro",
   "state": "SP",
-  "cpf": "123.456.789-00",
+  "email": "adrianos.silva@supermercado.com", 
+  "cpf": "12345678900",
   "birthday": "1995-01-01",
   "phone1": "11999998888",
-  "complement_id": 1
+  "complement_id": null
+}
+
+{  
+  "is_active": true,
+  "first_name": "Adriano",
+  "last_name": "Silva",
+  "address_line_1": "Rua Central do Mercado, 500",
+  "neighborhood": "Centro",
+  "state": "SP",
+  "email": "adriano.postgres.oficial@supermercado.com", 
+  "cpf": "123.456.789-01",
+  "birthday": "1995-01-01",
+  "phone1": "11999998888",
+  "complement_id": null
 }
 
 {  
@@ -19,14 +34,29 @@
   "first_name": "Maria",
   "middle_name": "Polyum",
   "last_name": "Silva",
-  "address_line_1": "Rua Central do Mercado, 500",
+  "address_line_1": "Avenida das Nacoes 750",
   "neighborhood": "Centro",
   "state": "SP",
   "email": "maria.silva@supermercado.com",
-  "cpf": "987.654.321-00",
+  "cpf": "98765432100",
+  "birthday": "1995-01-01",
+  "phone1": "11988887777",
+  "complement_id": null
+}
+
+{  
+  "is_active": true,
+  "first_name": "Adriana",
+  "middle_name": "Gerente",
+  "last_name": "Silva",
+  "address_line_1": "Rua Central do Mercado, 500",
+  "neighborhood": "Centro",
+  "state": "SP",
+  "email": "adriano.caixas@supermercado.com",
+  "cpf": "12345678902",
   "birthday": "1995-01-01",
   "phone1": "11999998888",
-  "complement_id": 2
+  "complement_id": null
 }
 
 # UPDATE = id = 1

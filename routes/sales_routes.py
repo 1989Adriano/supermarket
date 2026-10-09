@@ -12,16 +12,9 @@ router = APIRouter(prefix="/sales", tags=["Sales"])
 # Create
 @router.post("/", response_model=SalesResponse, status_code=status.HTTP_201_CREATED)
 async def create_sale(payload: SalesRequest, db: AsyncSession = Depends(get_db)):
-    repo = SalesRepository(db)
+    repo = SalesRepository(db)  
 
-    # Extrai o dirct e Excluí a chave 'items' temporariamente
-    sale_data = payload.model_dump(exclude={"items"})
-
-    # Extraí a lista de itens que veio dentro do carrinho de compras
-    # Se o operador não mandou nada, criamos uma lista vazia por segurança
-    items_data = [item for item in payload.items] if payload.items else []
-
-    new_sale = await repo.create_sale(sale_data, items_data)
+    new_sale = await repo.create_sale(sale_data=payload.model_dump(), items_data=[])
     return new_sale
 
 
@@ -29,6 +22,8 @@ async def create_sale(payload: SalesRequest, db: AsyncSession = Depends(get_db))
 @router.get("/", response_model=list[SalesResponse], status_code=status.HTTP_200_OK)
 async def get_all_sales(db: AsyncSession = Depends(get_db)):
     repo = SalesRepository(db)
+
+    # Passa os dados do cupom e envia uma lista vazia [] para os itens
     new_search = await repo.get_all_sales()
     return new_search
 

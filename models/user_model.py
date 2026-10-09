@@ -16,7 +16,7 @@ class Users(BaseFile):
         Integer,
         ForeignKey("user_complements.id", ondelete="CASCADE"),
         unique=True,
-        nullable=False,
+        nullable=True,
     )
     complement = relationship("UserComplements", lazy="joined")
     
