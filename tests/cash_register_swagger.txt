@@ -1,0 +1,26 @@
+####### CASH REGISTER ########
+
+# CREATE(ABERTURA DE CAIXA COM SUCESSO)
+{
+  "terminal_number": "001",
+  "opening_balance": 150.00,
+  "status": "aberto",
+  "opened_at": "2026-10-09T08:00:00",
+  "cashier_id": 1
+}
+
+# TESTE DE OPERADOR FANTASMA 
+{
+  "terminal_number": "001",
+  "opening_balance": 150.00,
+  "status": "aberto",
+  "opened_at": "2026-10-09T08:05:00",
+  "cashier_id": 999
+}
+
+# Update
+{
+  "status": "fechado",
+  "closing_balance": 1450.75,
+  "closed_at": "2026-10-09T18:00:00"
+}

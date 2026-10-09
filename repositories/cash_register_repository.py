@@ -1,4 +1,6 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.cash_register_model import CashRegisterSession
@@ -18,13 +20,30 @@ class CashRegisterSessionRepository:
     # Create
     async def create_cash_register(self, data: dict) -> CashRegisterSession:
         """Recebe e Le o dicionário vindo da rota."""
-        new_register = CashRegisterSession(**data)
+        try: 
+            new_register = CashRegisterSession(**data)
 
-        self.session.add(new_register)
-        await self.session.commit()
-        await self.session.refresh(new_register)
+            self.session.add(new_register)
+            await self.session.commit()
+            await self.session.refresh(new_register)
+            return new_register
+        
+        except IntegrityError as e:
+            await self.session.rollback()
+            error_msg = str(e.orig).lower()
 
-        return new_register
+            # Verifica Se o funcionário informado não existe
+            if "foreign key" in error_msg or "employee" in error_msg or "user" in error_msg:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Não foi possível abrir o caixa! O ID do funcionário/operador informado não existe no sistema."
+                )
+
+            # Tratamento genérico de segurança generico Erro 500
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Erro de integridade de dados ao registrar a sessão de caixa. Verifique os parâmetros informados."
+            )
 
     # Read All
     async def get_all_cash_register(self) -> list[CashRegisterSession]:
@@ -54,7 +73,8 @@ class CashRegisterSessionRepository:
 
         if cash_register_exist:
             for field, value in data.items():
-                setattr(cash_register_exist, field, value)
+                if value is not None:
+                    setattr(cash_register_exist, field, value)
 
             await self.session.commit()
             await self.session.refresh(cash_register_exist)

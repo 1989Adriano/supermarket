@@ -1,0 +1,46 @@
+######## STOCK AJUSTMENT##########
+
+# CREATE
+{
+  "quantity": -2,
+  "adjusted_at": "2026-10-09T14:50:00",
+  "reason": "consumo_interno",
+  "notes": "Avaria identificada na gondola - saco rasgado",
+  "product_id": 1,
+  "employee_id": 1
+}
+
+{
+  "quantity": -2,
+  "adjusted_at": "2026-10-09T14:50:00",
+  "reason": "consumo_interno",
+  "notes": "Avaria identificada na gondola - saco rasgado",
+  "product_id": 2,
+  "employee_id": 1
+}
+
+
+# TESTE DE PRODUTO FANTASMA
+{
+  "quantity": -5,
+  "adjusted_at": "2026-10-09T14:55:00",
+  "reason": "quebra_avaria",
+  "notes": "Tentativa de lancamento de produto invalido",
+  "product_id": 999,
+  "employee_id": 1
+}
+
+# TESTE DE FUNCIONÁRIO INVÁLIDO
+{
+  "quantity": -1,
+  "adjusted_at": "2026-10-09T15:00:00",
+  "reason": "vencimento",
+  "notes": "Lancamento com funcionario fantasma",
+  "product_id": 2,
+  "employee_id": 888
+}
+
+# UPDATE TESTE
+{
+  "notes": "Correção: Saco molhado no corredor central"
+}
