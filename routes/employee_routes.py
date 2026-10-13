@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
+from core.security import require_admin
 from repositories.employee_repository import EmployeeRepository
 from schemas.employee_schemas import EmployeeRequest, EmployeeResponse, EmployeeUpdate
 
@@ -11,7 +12,7 @@ router = APIRouter(prefix="/employee", tags=["Employee"])
 
 # Create
 @router.post("/", response_model=EmployeeResponse, status_code=status.HTTP_201_CREATED)
-async def create_employees(payload: EmployeeRequest, db: AsyncSession = Depends(get_db)):
+async def create_employees(payload: EmployeeRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = EmployeeRepository(db)
@@ -21,7 +22,7 @@ async def create_employees(payload: EmployeeRequest, db: AsyncSession = Depends(
 
 # Read All
 @router.get("/", response_model=list[EmployeeResponse], status_code=status.HTTP_200_OK)
-async def get_all_employees(db: AsyncSession = Depends(get_db)):
+async def get_all_employees(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = EmployeeRepository(db)
@@ -30,7 +31,7 @@ async def get_all_employees(db: AsyncSession = Depends(get_db)):
 
 # Read by ID
 @router.get("/{employee_id}", response_model=EmployeeResponse, status_code=status.HTTP_200_OK)
-async def get_employee_id(employee_id: int, db: AsyncSession = Depends(get_db)):
+async def get_employee_id(employee_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
         
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = EmployeeRepository(db)
@@ -45,7 +46,7 @@ async def get_employee_id(employee_id: int, db: AsyncSession = Depends(get_db)):
 
 # Update
 @router.put("/{employee_id}", response_model=EmployeeResponse, status_code=status.HTTP_200_OK)
-async def update_employees(employee_id: int, payload: EmployeeUpdate, db: AsyncSession = Depends(get_db)):
+async def update_employees(employee_id: int, payload: EmployeeUpdate, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = EmployeeRepository(db)
@@ -60,7 +61,7 @@ async def update_employees(employee_id: int, payload: EmployeeUpdate, db: AsyncS
 
 # Delete
 @router.delete("/{employee_id}", response_model=EmployeeResponse, status_code=status.HTTP_200_OK)
-async def delete_employee(employee_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_employee(employee_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
         
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = EmployeeRepository(db)

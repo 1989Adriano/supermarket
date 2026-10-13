@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
+from core.security import require_admin
 from repositories.promotions_repository import PromotionsRepository
 from schemas.promotions_schema import (
     PromotionsRequest,
@@ -18,7 +19,7 @@ router = APIRouter(prefix="/promotions", tags=["Promotions"])
     "/", response_model=PromotionsResponse, status_code=status.HTTP_201_CREATED
 )
 async def create_promotions(
-    payload: PromotionsRequest, db: AsyncSession = Depends(get_db)
+    payload: PromotionsRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
 
     repo = PromotionsRepository(db)
@@ -30,7 +31,7 @@ async def create_promotions(
 @router.get(
     "/", response_model=list[PromotionsResponse], status_code=status.HTTP_200_OK
 )
-async def get_all_promotion(db: AsyncSession = Depends(get_db)):
+async def get_all_promotion(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     repo = PromotionsRepository(db)
     new_search = await repo.get_all_promotions()
@@ -41,7 +42,7 @@ async def get_all_promotion(db: AsyncSession = Depends(get_db)):
 @router.get(
     "/{promotion_id}", response_model=PromotionsResponse, status_code=status.HTTP_200_OK
 )
-async def get_promotion_id(promotion_id: int, db: AsyncSession = Depends(get_db)):
+async def get_promotion_id(promotion_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     repo = PromotionsRepository(db)
     new_search = await repo.get_promotions_by_id(promotion_id)
@@ -58,7 +59,7 @@ async def get_promotion_id(promotion_id: int, db: AsyncSession = Depends(get_db)
     "/{promotion_id}", response_model=PromotionsResponse, status_code=status.HTTP_200_OK
 )
 async def update_promotion(
-    promotion_id: int, payload: PromotionsUpdate, db: AsyncSession = Depends(get_db)
+    promotion_id: int, payload: PromotionsUpdate, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
 
     repo = PromotionsRepository(db)
@@ -77,7 +78,7 @@ async def update_promotion(
 @router.delete(
     "/{promotion_id}", response_model=PromotionsResponse, status_code=status.HTTP_200_OK
 )
-async def delete_promotion(promotion_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_promotion(promotion_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     repo = PromotionsRepository(db)
     promotion_deleted = await repo.delete_promotion(promotion_id)

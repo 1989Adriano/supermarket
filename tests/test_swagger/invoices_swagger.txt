@@ -1,0 +1,67 @@
+###### INVOICES #######
+
+# CREATE
+{
+  "invoice_number": "NFE-000123",
+  "series": "1",
+  "received_at": "2026-10-09T15:30:00",
+  "total_amount": 500.00,
+  "supplier_id": 1,
+  "items": [
+    {
+      "quantity": 100,
+      "unit_cost": 5.00,
+      "invoice_id": 0,
+      "product_id": 1
+    }
+  ]
+}
+
+# TESTE DE FORNECEDOR FANTASMA
+{
+  "invoice_number": "NFE-000124",
+  "series": "1",
+  "received_at": "2026-10-09T15:35:00",
+  "total_amount": 150.00,
+  "supplier_id": 999,
+  "items": [
+    {
+      "quantity": 10,
+      "unit_cost": 15.00,
+      "invoice_id": 0,
+      "product_id": 1
+    }
+  ]
+}
+
+{
+  "invoice_number": "NFE-000125",
+  "series": "1",
+  "received_at": "2026-10-09T15:40:00",
+  "total_amount": 200.00,
+  "supplier_id": 1,
+  "items": [
+    {
+      "quantity": 20,
+      "unit_cost": 10.00,
+      "invoice_id": 0,
+      "product_id": 999
+    }
+  ]
+}
+
+#  TESTE DE VALIDAÇÃO PYDANTIC
+{
+  "invoice_number": "NF",
+  "series": "1",
+  "total_amount": 50.00,
+  "supplier_id": 1,
+  "items": [
+    {
+      "quantity": 5,
+      "unit_cost": 10.00,
+      "invoice_id": 0,
+      "product_id": 1
+    }
+  ]
+}

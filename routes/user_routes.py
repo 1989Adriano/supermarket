@@ -2,38 +2,51 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
+from core.security import require_admin
+from core.security import create_access_token
 from repositories.user_repository import UserRespository
-from schemas.user_schemas import UserRequest, UserResponse, UserUpdate
+from schemas.user_schemas import (
+    TokenResponse,
+    UserLoginRequest,
+    UserRequest,
+    UserResponse,
+    UserUpdate,
+)
 
-# Instâcia as rotas
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-# Create
-@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def create_user(payload: UserRequest, db: AsyncSession = Depends(get_db)):
-
-    # Chama/intância a classe com as funções(liga/desliga a sessão)
+@router.post("/login", response_model=TokenResponse, status_code=status.HTTP_200_OK)
+async def login_user(payload: UserLoginRequest, db: AsyncSession = Depends(get_db)):
     repo = UserRespository(db)
-    new_user = await repo.create_user(payload.model_dump())
+    user = await repo.authenticate_user(payload.email, payload.password)
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Credenciais inválidas.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    token = create_access_token(str(user.id), getattr(user, "role", "user"))
+    return TokenResponse(access_token=token)
+
+
+@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def create_user(payload: UserRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
+    repo = UserRespository(db)
+    new_user = await repo.create_user(payload.model_dump(exclude_none=True))
     return new_user
 
 
-# Read All
 @router.get("/", response_model=list[UserResponse], status_code=status.HTTP_200_OK)
-async def get_all_users(db: AsyncSession = Depends(get_db)):
-
-    # Chama/intância a classe com as funções(liga/desliga a sessão)
+async def get_all_users(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = UserRespository(db)
-    new_search = await repo.get_all_users()
-    return new_search
+    return await repo.get_all_users()
 
 
-# Read by ID
 @router.get("/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
-async def get_user_id(user_id: int, db: AsyncSession = Depends(get_db)):
-
-    # Chama/intância a classe com as funções(liga/desliga a sessão)
+async def get_user_id(user_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = UserRespository(db)
     search_id = await repo.get_user_by_id(user_id)
 
@@ -44,17 +57,12 @@ async def get_user_id(user_id: int, db: AsyncSession = Depends(get_db)):
     return search_id
 
 
-# Update
 @router.put("/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def update_user(
-    user_id: int, payload: UserUpdate, db: AsyncSession = Depends(get_db)
+    user_id: int, payload: UserUpdate, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
-
-    # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = UserRespository(db)
-    user_updated = await repo.update_user(
-        user_id, payload.model_dump(exclude_unset=True)
-    )
+    user_updated = await repo.update_user(user_id, payload.model_dump(exclude_unset=True))
 
     if not user_updated:
         raise HTTPException(
@@ -63,13 +71,10 @@ async def update_user(
     return user_updated
 
 
-# Delete
 @router.delete(
     "/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK
 )
-async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
-
-    # Chama/intância a classe com as funções(liga/desliga a sessão)
+async def delete_user(user_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = UserRespository(db)
     user_deleted = await repo.delete_user(user_id)
 

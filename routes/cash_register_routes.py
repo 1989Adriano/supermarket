@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
+from core.security import require_admin
 from repositories.cash_register_repository import CashRegisterSessionRepository
 from schemas.cash_register_schemas import (
     CashRegisterRequest,
@@ -18,7 +19,7 @@ router = APIRouter(prefix="/cash_register", tags=["Cash_register"])
     "/", response_model=CashRegisterResponse, status_code=status.HTTP_201_CREATED
 )
 async def create_cash_register(
-    payload: CashRegisterRequest, db: AsyncSession = Depends(get_db)
+    payload: CashRegisterRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
     repo = CashRegisterSessionRepository(db)
     new_cash_in = await repo.create_cash_register(payload.model_dump())
@@ -29,7 +30,7 @@ async def create_cash_register(
 @router.get(
     "/", response_model=list[CashRegisterResponse], status_code=status.HTTP_200_OK
 )
-async def get_all_cash_register(db: AsyncSession = Depends(get_db)):
+async def get_all_cash_register(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = CashRegisterSessionRepository(db)
     new_search = await repo.get_all_cash_register()
     return new_search
@@ -41,7 +42,7 @@ async def get_all_cash_register(db: AsyncSession = Depends(get_db)):
     response_model=CashRegisterResponse,
     status_code=status.HTTP_200_OK,
 )
-async def get_cash_register_id(cash_id: int, db: AsyncSession = Depends(get_db)):
+async def get_cash_register_id(cash_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = CashRegisterSessionRepository(db)
     new_search = await repo.get_cash_register_by_id(cash_id)
 
@@ -58,7 +59,7 @@ async def get_cash_register_id(cash_id: int, db: AsyncSession = Depends(get_db))
     "/{cash_id}", response_model=CashRegisterResponse, status_code=status.HTTP_200_OK
 )
 async def update_cash_register(
-    cash_id: int, payload: CashRegisterUpdate, db: AsyncSession = Depends(get_db)
+    cash_id: int, payload: CashRegisterUpdate, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
     repo = CashRegisterSessionRepository(db)
     cash_registered_updated = await repo.update_cash_register(
@@ -77,7 +78,7 @@ async def update_cash_register(
 @router.delete(
     "/{cash_id}", response_model=CashRegisterResponse, status_code=status.HTTP_200_OK
 )
-async def delete_cash_register(cash_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_cash_register(cash_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = CashRegisterSessionRepository(db)
     cash_registered_deleted = await repo.delete_cash_register(cash_id)
 

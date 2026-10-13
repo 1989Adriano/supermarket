@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
+from core.security import require_admin
 from repositories.products_repository import ProductsRepository
 from schemas.product_schemas import ProductRequest, ProductResponse, ProductUpate
 
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/products", tags=["Products"])
 # Create
 @router.post("/", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 async def create_new_product(
-    payload: ProductRequest, db: AsyncSession = Depends(get_db)
+    payload: ProductRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
 
     # Instância a classe do repositoty(db: liga/desliga a sessão)
@@ -23,7 +24,7 @@ async def create_new_product(
 
 # Read All
 @router.get("/", response_model=list[ProductResponse], status_code=status.HTTP_200_OK)
-async def get_all_products(db: AsyncSession = Depends(get_db)):
+async def get_all_products(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Instância a classe do repositoty(db: liga/desliga a sessão)
     repo = ProductsRepository(db)
@@ -35,7 +36,7 @@ async def get_all_products(db: AsyncSession = Depends(get_db)):
 @router.get(
     "/{product_id}", response_model=ProductResponse, status_code=status.HTTP_200_OK
 )
-async def get_products_id(product_id: int, db: AsyncSession = Depends(get_db)):
+async def get_products_id(product_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Instância a classe do repositoty(db: liga/desliga a sessão)
     repo = ProductsRepository(db)
@@ -53,7 +54,7 @@ async def get_products_id(product_id: int, db: AsyncSession = Depends(get_db)):
     "/{product_id}", response_model=ProductResponse, status_code=status.HTTP_200_OK
 )
 async def update_products(
-    product_id: int, payload: ProductUpate, db: AsyncSession = Depends(get_db)
+    product_id: int, payload: ProductUpate, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
 
     # Instância a classe do repositoty(db: liga/desliga a sessão)
@@ -73,7 +74,7 @@ async def update_products(
 @router.delete(
     "/{product_id}", response_model=ProductResponse, status_code=status.HTTP_200_OK
 )
-async def delete_products(product_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_products(product_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = ProductsRepository(db)
     product_deleted = await repo.delete_products(product_id)
 

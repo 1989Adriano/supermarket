@@ -1,0 +1,37 @@
+##### PAYMENTS ########
+
+# CREATE(LANÇAR PAGAMENTO COM SUCESSO)
+{
+  "amount": 59.80,
+  "transaction_date": "2026-10-09T15:20:00",
+  "acquirer": "Stone",
+  "authorization_code": "NSU-987654321",
+  "status": "aprovada",
+  "sale_id": 1
+}
+
+#  precisei usar o id=5 por causa de ajuste(use o id refente sua venda)
+{
+  "amount": 59.80,
+  "transaction_date": "2026-10-09T15:20:00",
+  "acquirer": "Stone",
+  "authorization_code": "NSU-987654321",
+  "status": "aprovada",
+  "sale_id": 5
+}
+
+# TESTE DE VENDA FANTASMA
+{
+  "amount": 10.00,
+  "transaction_date": "2026-10-09T15:25:00",
+  "acquirer": "Cielo",
+  "authorization_code": "NSU-000000000",
+  "status": "aprovada",
+  "sale_id": 999
+}
+
+
+# UPADTE(TESTE DE ATUALIZAÇÃO PARCIAL) (usei id=7 de cordo com meus teste e ajustes)
+{
+  "status": "DECLINED"
+}

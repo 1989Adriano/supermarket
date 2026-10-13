@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
+from core.security import require_admin
 from repositories.supplier_repository import SupplierRepository
 from schemas.supplier_schemas import SupplierRequest, SupplierResponse, SupplierUpdate
 
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/suppliers", tags=["Suppliers"])
 # Create
 @router.post("/", response_model=SupplierResponse, status_code=status.HTTP_201_CREATED)
 async def create_new_supplier(
-    payload: SupplierRequest, db: AsyncSession = Depends(get_db)
+    payload: SupplierRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = SupplierRepository(db)
@@ -22,7 +23,7 @@ async def create_new_supplier(
 
 # Read All
 @router.get("/", response_model=list[SupplierResponse], status_code=status.HTTP_200_OK)
-async def get__all_supplies(db: AsyncSession = Depends(get_db)):
+async def get__all_supplies(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = SupplierRepository(db)
@@ -34,7 +35,7 @@ async def get__all_supplies(db: AsyncSession = Depends(get_db)):
 @router.get(
     "/{supplier_id}", response_model=SupplierResponse, status_code=status.HTTP_200_OK
 )
-async def get_supplies_id(supplier_id: int, db: AsyncSession = Depends(get_db)):
+async def get_supplies_id(supplier_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = SupplierRepository(db)
@@ -54,7 +55,7 @@ async def get_supplies_id(supplier_id: int, db: AsyncSession = Depends(get_db)):
     "/{supplier_id}", response_model=SupplierResponse, status_code=status.HTTP_200_OK
 )
 async def update_supply(
-    supplier_id: int, payload: SupplierUpdate, db: AsyncSession = Depends(get_db)
+    supplier_id: int, payload: SupplierUpdate, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = SupplierRepository(db)
@@ -75,7 +76,7 @@ async def update_supply(
 @router.delete(
     "/{supplier_id}", response_model=SupplierResponse, status_code=status.HTTP_200_OK
 )
-async def delete_supply(supplier_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_supply(supplier_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
 
     # Chama/intância a classe com as funções(liga/desliga a sessão)
     repo = SupplierRepository(db)

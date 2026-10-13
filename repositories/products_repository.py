@@ -74,18 +74,29 @@ class ProductsRepository:
         result = await self.session.execute(
             select(Products).where(Products.id == products_id)
         )
-
-        # Se existe cai no if, se não retorna None
         products_exist = result.scalar_one_or_none()
 
         if products_exist:
-            for field, value in data.items():
-                setattr(products_exist, field, value)
+            for field, value in data.items():           
+                if value is not None:
+                    setattr(products_exist, field, value)
 
-            await self.session.commit()
-            await self.session.refresh(products_exist)
-
-            return products_exist
+            try:
+                await self.session.commit()
+                await self.session.refresh(products_exist)
+                return products_exist
+            except IntegrityError as e:
+                await self.session.rollback()
+                error_msg = str(e.orig).lower()
+                if "code_bar" in error_msg or "barcode" in error_msg:
+                    raise HTTPException(
+                        status_code=status.HTTP_409_CONFLICT,
+                        detail="Não foi possível atualizar! Esse código de barras já está em uso por outro produto.",
+                    )
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Erro de integridade ao atualizar o produto.",
+                )
         return None
 
     # Delete

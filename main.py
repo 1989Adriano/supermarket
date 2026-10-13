@@ -1,25 +1,26 @@
 from contextlib import asynccontextmanager
+import os
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.database import Base, database
-from routes.cash_register_routes import router as cash_register_router
-from routes.employee_routes import router as employee_router
-from routes.invoice_routes import router as invoice_router
-from routes.payments_routes import router as payment_router
-from routes.produtcts_routes import router as products_router
-from routes.promotions_routes import router as promotions_router
-from routes.sales_routes import router as sale_router
-from routes.stock_ajustment_routes import router as stock_router
-from routes.supplier_routes import router as supplier_router
-from routes.user_routes import router as user_router
+from routes import (
+    cash_register_routes,
+    employee_routes,
+    invoice_routes,
+    payments_routes,
+    produtcts_routes,
+    promotions_routes,
+    sales_routes,
+    stock_ajustment_routes,
+    supplier_routes,
+    user_routes,
+)
 
-# Cria as tabelas do Banco. Ciclo de vida (Lifespan) assíncrono
-"""
-Como estamos criando o db direto usamos essa função,
-caso o banco ja existice deixa somente a parte do FastAPi
-"""
+load_dotenv()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,33 +29,33 @@ async def lifespan(app: FastAPI):
     yield
 
 
-# Cria a Instância do FastAPI
-app = FastAPI(title="supermarket", lifespan=lifespan)
+app = FastAPI(title="Supermarket API", lifespan=lifespan)
 
+allowed_origins = os.getenv(
+    "ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
+)
+origins = [origin.strip() for origin in allowed_origins.split(",") if origin.strip()]
 
-# Configuração de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
-# Conectando as rotas ao sistema
-app.include_router(supplier_router)
-app.include_router(products_router)
-app.include_router(user_router)
-app.include_router(employee_router)
-app.include_router(promotions_router)
-app.include_router(stock_router)
-app.include_router(sale_router)
-app.include_router(cash_register_router)
-app.include_router(payment_router)
-app.include_router(invoice_router)
+app.include_router(user_routes.router)
+app.include_router(supplier_routes.router)
+app.include_router(employee_routes.router)
+app.include_router(produtcts_routes.router)
+app.include_router(cash_register_routes.router)
+app.include_router(promotions_routes.router)
+app.include_router(stock_ajustment_routes.router)
+app.include_router(invoice_routes.router)
+app.include_router(payments_routes.router)
+app.include_router(sales_routes.router)
 
 
-# Rota test para swagger
 @app.get("/")
-async def home():
-    return {"message": "API do Supermercado operacional e online!"}
+def health_check():
+    return {"status": "ok"}

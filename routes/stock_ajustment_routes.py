@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
+from core.security import require_admin
 from repositories.stock_ajustment_repository import StockAdjustmentRepository
 from schemas.stock_adjustment_schema import (
     StockAdjustmentRequest,
@@ -18,7 +19,7 @@ router = APIRouter(prefix="/stock_ajustment", tags=["Stock_ajustment"])
     "/", response_model=StockAdjustmentResponse, status_code=status.HTTP_201_CREATED
 )
 async def create_stock(
-    payload: StockAdjustmentRequest, db: AsyncSession = Depends(get_db)
+    payload: StockAdjustmentRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
 
     repo = StockAdjustmentRepository(db)
@@ -28,7 +29,7 @@ async def create_stock(
 
 # Read All
 @router.get("/", response_model=list[StockAdjustmentResponse], status_code=status.HTTP_200_OK)
-async def get_all_stock(db: AsyncSession = Depends(get_db)):
+async def get_all_stock(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = StockAdjustmentRepository(db)
     new_search = await repo.get_all_stock_adjustment()
     return new_search
@@ -40,7 +41,7 @@ async def get_all_stock(db: AsyncSession = Depends(get_db)):
     response_model=StockAdjustmentResponse,
     status_code=status.HTTP_200_OK,
 )
-async def get_stock_id(stock_id: int, db: AsyncSession = Depends(get_db)):
+async def get_stock_id(stock_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = StockAdjustmentRepository(db)
     new_search = await repo.get_stock_adjustment_by_id(stock_id)
 
@@ -59,7 +60,7 @@ async def get_stock_id(stock_id: int, db: AsyncSession = Depends(get_db)):
     status_code=status.HTTP_200_OK,
 )
 async def update_stock(
-    stock_id: int, payload: StockAdjustmentUpdate, db: AsyncSession = Depends(get_db)
+    stock_id: int, payload: StockAdjustmentUpdate, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)
 ):
 
     repo = StockAdjustmentRepository(db)
@@ -81,7 +82,7 @@ async def update_stock(
     response_model=StockAdjustmentResponse,
     status_code=status.HTTP_200_OK,
 )
-async def delete_stock(stock_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_stock(stock_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = StockAdjustmentRepository(db)
     stock_deleted = await repo.delete_stock_adjustment(stock_id)
 

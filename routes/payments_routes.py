@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from repositories.payments_repository import PaymentsRepository
 from schemas.payments_schemas import PaymentRequest, PaymentResponse, PaymentUpdate
 from core.database import get_db
+from core.security import require_admin
 
 
 # Instância das rotas
@@ -11,7 +12,7 @@ router = APIRouter(prefix="/payments", tags=["Payments"])
 
 # Create
 @router.post("/", response_model=PaymentResponse, status_code=status.HTTP_201_CREATED)
-async def create_payment(payload: PaymentRequest, db: AsyncSession = Depends(get_db)):
+async def create_payment(payload: PaymentRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = PaymentsRepository(db)
     new_payment = await repo.create_payment(payload.model_dump())
     return new_payment
@@ -19,7 +20,7 @@ async def create_payment(payload: PaymentRequest, db: AsyncSession = Depends(get
 
 # Read All
 @router.get("/", response_model=list[PaymentResponse], status_code=status.HTTP_200_OK)
-async def get_all_payment(db: AsyncSession = Depends(get_db)):
+async def get_all_payment(db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = PaymentsRepository(db)
     new_search = await repo.get_all_payments()
     return new_search
@@ -29,7 +30,7 @@ async def get_all_payment(db: AsyncSession = Depends(get_db)):
 @router.get(
     "/{payments_id}", response_model=PaymentResponse, status_code=status.HTTP_200_OK
 )
-async def get_payment_id(payments_id: int, db: AsyncSession = Depends(get_db)):
+async def get_payment_id(payments_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = PaymentsRepository(db)
     new_search = await repo.get_payments_by_id(payments_id)
 
@@ -52,7 +53,7 @@ tudo seria facilmente infligido.
 @router.delete(
     "/{payments_id}", response_model=PaymentResponse, status_code=status.HTTP_200_OK
 )
-async def delete_payment(payments_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_payment(payments_id: int, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):
     repo = PaymentsRepository(db)
     payment_deleted = await repo.delete_payments(payments_id)
 

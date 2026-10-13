@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import relationship
 
 from models.class_mother_personnel_model import BaseComplement, BaseFile
@@ -11,6 +11,9 @@ class UserComplements(BaseComplement):
 class Users(BaseFile):
     __tablename__ = "users"
 
+    password_hash = Column(String(255), nullable=False, default="")
+    role = Column(String(50), nullable=False, default="user")
+
     # Relacionamento com Complemento do usuário
     complement_id = Column(
         Integer,
@@ -19,5 +22,5 @@ class Users(BaseFile):
         nullable=True,
     )
     complement = relationship("UserComplements", lazy="joined")
-    
+
     last_date_login = Column(DateTime, default=func.current_timestamp(), nullable=False)
