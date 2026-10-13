@@ -93,7 +93,7 @@ class SalesUpdate(BaseModel):
     total_amount: Decimal | None = Field(
         default=None, ge=0, max_digits=10, decimal_places=2
     )
-    
+
     payment_method: EnumPaymentMethod | None = None
     client_cpf: str | None = Field(default=None, min_length=14, max_length=14)
     cashier_id: int | None = None

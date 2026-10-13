@@ -77,7 +77,7 @@ class ProductsRepository:
         products_exist = result.scalar_one_or_none()
 
         if products_exist:
-            for field, value in data.items():           
+            for field, value in data.items():
                 if value is not None:
                     setattr(products_exist, field, value)
 

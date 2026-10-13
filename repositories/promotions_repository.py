@@ -26,27 +26,27 @@ class PromotionsRepository:
             await self.session.commit()
             await self.session.refresh(new_promotion)
             return new_promotion
-            
-        except IntegrityError as e:            
+
+        except IntegrityError as e:
             await self.session.rollback()
-            
+
             # Status de Erro para seque converte a mensagem do erro para minúsculas
             error_msg = str(e.orig).lower()
-            
+
             # Status de Erro para se o product_id informado não existir no cadastro do mercado
             if "foreign key" in error_msg or "product_id" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Impossível criar promoção! O ID do produto informado não existe no sistema.",
                 )
-            
+
             # Status de Erro para se tiver criado uma restrição para não duplicar o mesmo produto em encartes ativos
             if "unique" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
                     detail="Este produto já possui uma promoção ou encarte registrado!",
                 )
-                
+
             # Tratamento genérico contra Erro 500
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

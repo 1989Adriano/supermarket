@@ -10,13 +10,13 @@ class BasePayments(BaseModel):
     amount: Decimal = Field(..., ge=0, max_digits=10, decimal_places=2)
     transaction_date: datetime = Field(default_factory=datetime.now)
 
-    # Ex: 'Stone', 'Cielo', 'Banco do Brasil'   
-    acquirer: str | None = Field(default=None,  min_length=3, max_length=50)
+    # Ex: 'Stone', 'Cielo', 'Banco do Brasil'
+    acquirer: str | None = Field(default=None, min_length=3, max_length=50)
 
-    # Código NSU do comprovante do cartão    
-    authorization_code: str| None = Field(default=None, min_length=3, max_length=50)
-    
-    status: EnumTransactionStatus = Field(default=EnumTransactionStatus.APPROVED)   
+    # Código NSU do comprovante do cartão
+    authorization_code: str | None = Field(default=None, min_length=3, max_length=50)
+
+    status: EnumTransactionStatus = Field(default=EnumTransactionStatus.APPROVED)
     sale_id: int
 
 
@@ -33,8 +33,8 @@ class PaymentResponse(PaymentRequest):
 
 class PaymentUpdate(BaseModel):
     amount: Decimal | None = Field(default=None, ge=0, max_digits=10, decimal_places=2)
-    transaction_date: datetime | None = Field(default=None)    
+    transaction_date: datetime | None = Field(default=None)
     acquirer: str | None = Field(default=None, min_length=3, max_length=50)
-    authorization_code: str | None = Field(default=None, min_length=3, max_length=50)  
-    status: EnumTransactionStatus | None = None 
+    authorization_code: str | None = Field(default=None, min_length=3, max_length=50)
+    status: EnumTransactionStatus | None = None
     sale_id: int | None = None

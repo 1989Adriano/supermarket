@@ -43,6 +43,6 @@ class CashRegisterUpdate(BaseModel):
     closing_balance: Decimal | None = Field(
         default=None, ge=0, max_digits=10, decimal_places=2
     )
-    
+
     status: str | None = Field(default=None, min_length=3, max_length=20)
     cashier_id: int | None = None

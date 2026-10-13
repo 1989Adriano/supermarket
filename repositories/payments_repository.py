@@ -20,7 +20,7 @@ class PaymentsRepository:
     # Create
     async def create_payment(self, data: dict) -> PaymentTransactions:
         """Recebe e Le o dicionário vindo da rota."""
-        try: 
+        try:
             new_payment = PaymentTransactions(**data)
 
             self.session.add(new_payment)
@@ -36,13 +36,13 @@ class PaymentsRepository:
             if "foreign key" in error_msg or "sale" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Não foi possível registrar o pagamento! O ID da venda (sale_id) informado não existe no sistema."
+                    detail="Não foi possível registrar o pagamento! O ID da venda (sale_id) informado não existe no sistema.",
                 )
 
             # Tratamento genérico de segurança generico Erro 500
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Erro de integridade ao salvar a transação financeira. Verifique os relacionamentos."
+                detail="Erro de integridade ao salvar a transação financeira. Verifique os relacionamentos.",
             )
 
     # Read All

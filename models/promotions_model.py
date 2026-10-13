@@ -15,7 +15,7 @@ class Promotions(Base):
 
     # Validade automática da oferta.
     start_date = Column(DateTime, nullable=False)
-    
+
     end_date = Column(DateTime, nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
 

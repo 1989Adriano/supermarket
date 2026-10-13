@@ -40,12 +40,12 @@ class SupplierRepository:
                     status_code=status.HTTP_409_CONFLICT,
                     detail="Já existe um fornecedor cadastrado com este CNPJ!",
                 )
-            
+
             if "state_registration" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
                     detail="Já existe um fornecedor cadastrado com esta Inscrição Estadual!",
-                )           
+                )
 
             if "email" in error_msg:
                 raise HTTPException(

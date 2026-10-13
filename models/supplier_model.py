@@ -20,13 +20,13 @@ class Supplier(Base):
     trade_name = Column(String(150), nullable=False)
 
     # Ex: 00.000.000/0000-00
-    cnpj = Column(String(18), unique=True, nullable=False) 
+    cnpj = Column(String(18), unique=True, nullable=False)
 
     # Inscrição Estadual (IE)
     state_registration = Column(String(20), unique=True, nullable=True)
-   
+
     # Nome do vendedor que te atende
-    contact_name = Column(String(100), nullable=False) 
+    contact_name = Column(String(100), nullable=False)
     email = Column(String(100), unique=True, nullable=True)
     phone = Column(String(20), nullable=False)
 

@@ -20,7 +20,7 @@ class EmployeeRepository:
     # Create
     async def create_employee(self, data: dict) -> Employee:
         """Recebe e Le o dicionário vindo da rota."""
-        
+
         try:
             new_employee = Employee(**data)
 
@@ -28,33 +28,33 @@ class EmployeeRepository:
             await self.session.commit()
             await self.session.refresh(new_employee)
             return new_employee
-        
+
         except IntegrityError as e:
-            await self.session.rollback()            
-          
+            await self.session.rollback()
+
             error_msg = str(e.orig).lower()
-            
+
             # Status de Erro para s se houver colisão de PIS/PASEP
             if "pis_pasep" in error_msg or "pis" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
                     detail="Já existe um funcionário cadastrado com este número de PIS/PASEP!",
                 )
-            
+
             # Status de Erro para se houver colisão de Carteira de Trabalho
             if "ctps" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
                     detail="Esta Carteira de Trabalho (CTPS) já está registrada para outro funcionário!",
                 )
-                
+
             # Status de Erro para se o complement_id informado não existir
             if "foreign key" in error_msg or "complement_id" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="O ID do complemento informado não existe no sistema!",
                 )
-                
+
             # Tratamento genérico de segurança contra Erro 500
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

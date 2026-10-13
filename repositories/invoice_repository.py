@@ -25,7 +25,6 @@ class InvoiceItemRepository:
     async def create_invoice_item(self, data: dict) -> InvoiceItem:
         """Recebe e Le o dicionário vindo da rota."""
         try:
-
             new_item = InvoiceItem(**data)
 
             # Busca o produto para aumentar o estoque.
@@ -38,9 +37,9 @@ class InvoiceItemRepository:
             if not product_obj:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Não foi possível adicionar o item! O ID do produto informado não existe no sistema."
+                    detail="Não foi possível adicionar o item! O ID do produto informado não existe no sistema.",
                 )
-            
+
             # SOMA o estoque, mercadoria está chegando do fornecedor.
             product_obj.stock_quantity += new_item.quantity
 
@@ -57,13 +56,13 @@ class InvoiceItemRepository:
             if "foreign key" in error_msg and "invoice" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Erro de amarração fiscal! O ID da nota fiscal (invoice_id) informado não existe."
+                    detail="Erro de amarração fiscal! O ID da nota fiscal (invoice_id) informado não existe.",
                 )
 
             # Tratamento genérico de segurança generico Erro 500
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Erro de integridade referencial ao salvar o item da nota."
+                detail="Erro de integridade referencial ao salvar o item da nota.",
             )
 
     # Read All
@@ -140,13 +139,15 @@ class InvoiceRepository:
         self, invoice_data: dict, items_data: list[dict]
     ) -> Invoices:
         """Recebe os dados da nota e a lista de itens do lote para salvar em lote."""
-        try: 
+        try:
             new_invoice = Invoices(**invoice_data)
             self.session.add(new_invoice)
             await self.session.flush()
 
             for item in items_data:
-                item_dict = item.model_dump() if hasattr(item, "model_dump") else dict(item)
+                item_dict = (
+                    item.model_dump() if hasattr(item, "model_dump") else dict(item)
+                )
                 item_obj = InvoiceItem(**item_dict)
                 item_obj.invoice_id = new_invoice.id
 
@@ -160,9 +161,9 @@ class InvoiceRepository:
                 if not product_obj:
                     raise HTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,
-                        detail=f"Lançamento cancelado! O produto ID {item_obj.product_id} inserido na lista de itens não existe no sistema."
+                        detail=f"Lançamento cancelado! O produto ID {item_obj.product_id} inserido na lista de itens não existe no sistema.",
                     )
-                
+
                 # SOMA a quantidade da nota ao estoque real do produto
                 product_obj.stock_quantity += item_obj.quantity
 
@@ -180,20 +181,20 @@ class InvoiceRepository:
             if "foreign key" in error_msg and "supplier" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Não foi possível emitir a nota! O ID do fornecedor (supplier_id) informado não existe no sistema."
+                    detail="Não foi possível emitir a nota! O ID do fornecedor (supplier_id) informado não existe no sistema.",
                 )
 
             # Verifica e captura o numero da nota errado/fantasma
             if "unique constraint" in error_msg or "invoice_number" in error_msg:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Conflito fiscal! Uma Nota Fiscal com este mesmo número (invoice_number) já está lançada no sistema."
+                    detail="Conflito fiscal! Uma Nota Fiscal com este mesmo número (invoice_number) já está lançada no sistema.",
                 )
 
             # Tratamento genérico de segurança generico Erro 500
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Erro de consistência ao salvar cabeçalho e itens da nota fiscal de entrada."
+                detail="Erro de consistência ao salvar cabeçalho e itens da nota fiscal de entrada.",
             )
 
     # Read All

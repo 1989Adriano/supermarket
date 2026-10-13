@@ -73,7 +73,7 @@ class BaseComplement(Base):
     sex = Column(
         SQLEnum(EnumSex, native_enum=False), default=EnumSex.EMPTY, nullable=True
     )
-    
+
     rg = Column(String(20), unique=True, nullable=True)
     nationality = Column(String(50), nullable=True)
     place_of_birth = Column(String(50), nullable=True)
