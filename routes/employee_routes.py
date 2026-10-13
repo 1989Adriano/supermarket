@@ -9,7 +9,6 @@ from schemas.employee_schemas import EmployeeRequest, EmployeeResponse, Employee
 # Instância as rotas
 router = APIRouter(prefix="/employee", tags=["Employee"])
 
-
 # Create
 @router.post("/", response_model=EmployeeResponse, status_code=status.HTTP_201_CREATED)
 async def create_employees(payload: EmployeeRequest, db: AsyncSession = Depends(get_db), _: dict = Depends(require_admin)):

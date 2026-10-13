@@ -35,6 +35,7 @@ async def override_app_db():
     app.dependency_overrides.clear()
 
 
+# Dados Ficticios
 async def create_employee(client: AsyncClient):
     payload = {
         "first_name": "Carlos",

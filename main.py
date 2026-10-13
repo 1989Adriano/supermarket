@@ -1,5 +1,5 @@
-from contextlib import asynccontextmanager
 import os
+from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -20,7 +20,6 @@ from routes import (
 )
 
 load_dotenv()
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
